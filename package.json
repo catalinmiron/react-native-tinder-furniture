@@ -15,7 +15,7 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-36.0.0.tar.gz",
     "react-native-deck-swiper": "^1.6.7",
     "react-native-reanimated": "~1.4.0",
-    "react-native-view-overflow": "^0.0.4",
+    "react-native-view-overflow": "^0.0.5",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {

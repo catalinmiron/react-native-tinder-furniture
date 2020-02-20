@@ -1,4 +1,4 @@
-import React, { useRef, Component } from 'react';
+import React, { Component } from 'react';
 import Swiper from 'react-native-deck-swiper';
 import {
   Image,
@@ -6,11 +6,13 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView
+  SafeAreaView,
+  Dimensions
 } from 'react-native';
 import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import data from './data';
+const { width } = Dimensions.get('window');
 const stackSize = 4;
 const colors = {
   red: '#EC2379',
@@ -67,14 +69,7 @@ export default class Exemple extends Component {
   onSwiped = () => {
     this.transitionRef.current.animateNextTransition();
     this.setState({
-      index: this.state.index + 1
-    });
-  };
-
-  onSwipedAllCards = () => {
-    this._swiperKey++;
-    this.setState({
-      index: 0
+      index: (this.state.index + 1) % this.state.cards.length
     });
   };
 
@@ -95,13 +90,13 @@ export default class Exemple extends Component {
       <SafeAreaView style={styles.container}>
         <MaterialCommunityIcons
           name='crop-square'
-          size={400}
+          size={width}
           color={colors.blue}
           style={{
             opacity: 0.05,
             transform: [{ rotate: '45deg' }, { scale: 1.4 }],
             position: 'absolute',
-            left: -30
+            left: -15
           }}
         />
         <StatusBar hidden={true} />
@@ -112,7 +107,6 @@ export default class Exemple extends Component {
             renderCard={this.renderCard}
             backgroundColor={'transparent'}
             onSwiped={this.onSwiped}
-            onSwipedAll={this.onSwipedAllCards}
             onTapCard={this.swipeLeft}
             cards={this.state.cards}
             cardIndex={this.state.index}
@@ -120,6 +114,7 @@ export default class Exemple extends Component {
             stackSize={stackSize}
             stackScale={10}
             stackSeparation={14}
+            infinite
             animateOverlayLabelsOpacity
             animateCardOpacity
             disableTopSwipe
