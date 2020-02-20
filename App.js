@@ -82,10 +82,6 @@ export default class Exemple extends Component {
   };
 
   render() {
-    if (this.state.cards.length === 0) {
-      return <Text>loading...</Text>;
-    }
-
     return (
       <SafeAreaView style={styles.container}>
         <MaterialCommunityIcons
@@ -94,9 +90,10 @@ export default class Exemple extends Component {
           color={colors.blue}
           style={{
             opacity: 0.05,
-            transform: [{ rotate: '45deg' }, { scale: 1.4 }],
+            transform: [{ rotate: '45deg' }, { scale: 1.6 }],
             position: 'absolute',
-            left: -15
+            left: -15,
+            top: 30
           }}
         />
         <StatusBar hidden={true} />
