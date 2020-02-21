@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import data from './data';
 const { width } = Dimensions.get('window');
+
 const stackSize = 4;
 const colors = {
   red: '#EC2379',
@@ -49,14 +51,10 @@ const transition = (
 export default class Exemple extends Component {
   swiperRef = React.createRef();
   transitionRef = React.createRef();
-  constructor(props) {
-    super(props);
-    this._swiperKey = 0;
-    this.state = {
-      cards: data,
-      index: 0
-    };
-  }
+  state = {
+    cards: data,
+    index: 0
+  };
 
   renderCard = card => {
     return (
@@ -100,7 +98,6 @@ export default class Exemple extends Component {
         <View style={styles.swiperContainer}>
           <Swiper
             ref={this.swiperRef}
-            key={this._swiperKey}
             renderCard={this.renderCard}
             backgroundColor={'transparent'}
             onSwiped={this.onSwiped}
