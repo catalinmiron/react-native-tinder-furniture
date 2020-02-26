@@ -98,17 +98,17 @@ export default class Exemple extends Component {
         <View style={styles.swiperContainer}>
           <Swiper
             ref={this.swiperRef}
+            cards={this.state.cards}
+            cardIndex={this.state.index}
             renderCard={this.renderCard}
+            infinite
             backgroundColor={'transparent'}
             onSwiped={this.onSwiped}
             onTapCard={this.swipeLeft}
-            cards={this.state.cards}
-            cardIndex={this.state.index}
             cardVerticalMargin={50}
             stackSize={stackSize}
             stackScale={10}
             stackSeparation={14}
-            infinite
             animateOverlayLabelsOpacity
             animateCardOpacity
             disableTopSwipe
@@ -170,7 +170,7 @@ export default class Exemple extends Component {
               </Text>
             </View>
           </Transitioning.View>
-          <View style={styles.footerContainer}>
+          <View style={styles.bottomContainerButtons}>
             <MaterialCommunityIcons.Button
               name='close'
               size={94}
@@ -209,13 +209,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   bottomContainerMeta: { alignContent: 'flex-end', alignItems: 'center' },
-  footerContainer: {
+  bottomContainerButtons: {
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   cardImage: {
-    width: 180,
-    height: '100%',
+    width: 160,
+    flex: 1,
     resizeMode: 'contain'
   },
   card: {
