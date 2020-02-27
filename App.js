@@ -100,7 +100,7 @@ export default function App() {
           infinite
           backgroundColor={'transparent'}
           onSwiped={onSwiped}
-          onTapCard={() => swiperRef.current.swipeLeft}
+          onTapCard={() => swiperRef.current.swipeLeft()}
           cardVerticalMargin={50}
           stackSize={stackSize}
           stackScale={10}
