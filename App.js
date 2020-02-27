@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import Swiper from 'react-native-deck-swiper';
+import React from 'react';
 import {
   Image,
   StatusBar,
@@ -9,10 +8,12 @@ import {
   SafeAreaView,
   Dimensions
 } from 'react-native';
+
+import data from './data';
+import Swiper from 'react-native-deck-swiper';
 import { Transitioning, Transition } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import data from './data';
 const { width } = Dimensions.get('window');
 
 const stackSize = 4;
@@ -48,152 +49,139 @@ const transition = (
   </Transition.Sequence>
 );
 
-export default class Exemple extends Component {
-  swiperRef = React.createRef();
-  transitionRef = React.createRef();
-  state = {
-    cards: data,
-    index: 0
+const swiperRef = React.createRef();
+const transitionRef = React.createRef();
+
+const Card = ({ card }) => {
+  return (
+    <View style={styles.card}>
+      <Image source={{ uri: card.image }} style={styles.cardImage} />
+    </View>
+  );
+};
+
+const CardDetails = ({ index }) => (
+  <View key={data[index].id} style={{ alignItems: 'center' }}>
+    <Text style={[styles.text, styles.heading]} numberOfLines={2}>
+      {data[index].name}
+    </Text>
+    <Text style={[styles.text, styles.price]}>{data[index].price}</Text>
+  </View>
+);
+
+export default function App() {
+  const [index, setIndex] = React.useState(0);
+  const onSwiped = () => {
+    transitionRef.current.animateNextTransition();
+    setIndex((index + 1) % data.length);
   };
 
-  renderCard = card => {
-    return (
-      <View style={styles.card}>
-        <Image source={{ uri: card.image }} style={styles.cardImage} />
-      </View>
-    );
-  };
-
-  onSwiped = () => {
-    this.transitionRef.current.animateNextTransition();
-    this.setState({
-      index: (this.state.index + 1) % this.state.cards.length
-    });
-  };
-
-  swipeLeft = () => {
-    this.swiperRef.current.swipeLeft();
-  };
-
-  swipeRight = () => {
-    this.swiperRef.current.swipeRight();
-  };
-
-  render() {
-    return (
-      <SafeAreaView style={styles.container}>
-        <MaterialCommunityIcons
-          name='crop-square'
-          size={width}
-          color={colors.blue}
-          style={{
-            opacity: 0.05,
-            transform: [{ rotate: '45deg' }, { scale: 1.6 }],
-            position: 'absolute',
-            left: -15,
-            top: 30
-          }}
-        />
-        <StatusBar hidden={true} />
-        <View style={styles.swiperContainer}>
-          <Swiper
-            ref={this.swiperRef}
-            cards={this.state.cards}
-            cardIndex={this.state.index}
-            renderCard={this.renderCard}
-            infinite
-            backgroundColor={'transparent'}
-            onSwiped={this.onSwiped}
-            onTapCard={this.swipeLeft}
-            cardVerticalMargin={50}
-            stackSize={stackSize}
-            stackScale={10}
-            stackSeparation={14}
-            animateOverlayLabelsOpacity
-            animateCardOpacity
-            disableTopSwipe
-            disableBottomSwipe
-            overlayLabels={{
-              left: {
-                title: 'NOPE',
-                style: {
-                  label: {
-                    backgroundColor: colors.red,
-                    borderColor: colors.red,
-                    color: colors.white,
-                    borderWidth: 1,
-                    fontSize: 24
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                    justifyContent: 'flex-start',
-                    marginTop: 20,
-                    marginLeft: -20
-                  }
-                }
-              },
-              right: {
-                title: 'LIKE',
-                style: {
-                  label: {
-                    backgroundColor: colors.blue,
-                    borderColor: colors.blue,
-                    color: colors.white,
-                    borderWidth: 1,
-                    fontSize: 24
-                  },
-                  wrapper: {
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                    marginTop: 20,
-                    marginLeft: 20
-                  }
+  return (
+    <SafeAreaView style={styles.container}>
+      <MaterialCommunityIcons
+        name='crop-square'
+        size={width}
+        color={colors.blue}
+        style={{
+          opacity: 0.05,
+          transform: [{ rotate: '45deg' }, { scale: 1.6 }],
+          position: 'absolute',
+          left: -15,
+          top: 30
+        }}
+      />
+      <StatusBar hidden={true} />
+      <View style={styles.swiperContainer}>
+        <Swiper
+          ref={swiperRef}
+          cards={data}
+          cardIndex={index}
+          renderCard={card => <Card card={card} />}
+          infinite
+          backgroundColor={'transparent'}
+          onSwiped={onSwiped}
+          onTapCard={() => swiperRef.current.swipeLeft}
+          cardVerticalMargin={50}
+          stackSize={stackSize}
+          stackScale={10}
+          stackSeparation={14}
+          animateOverlayLabelsOpacity
+          animateCardOpacity
+          disableTopSwipe
+          disableBottomSwipe
+          overlayLabels={{
+            left: {
+              title: 'NOPE',
+              style: {
+                label: {
+                  backgroundColor: colors.red,
+                  borderColor: colors.red,
+                  color: colors.white,
+                  borderWidth: 1,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: -20
                 }
               }
-            }}
+            },
+            right: {
+              title: 'LIKE',
+              style: {
+                label: {
+                  backgroundColor: colors.blue,
+                  borderColor: colors.blue,
+                  color: colors.white,
+                  borderWidth: 1,
+                  fontSize: 24
+                },
+                wrapper: {
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  marginTop: 20,
+                  marginLeft: 20
+                }
+              }
+            }
+          }}
+        />
+      </View>
+      <View style={styles.bottomContainer}>
+        <Transitioning.View
+          ref={transitionRef}
+          transition={transition}
+          style={styles.bottomContainerMeta}
+        >
+          <CardDetails index={index} />
+        </Transitioning.View>
+        <View style={styles.bottomContainerButtons}>
+          <MaterialCommunityIcons.Button
+            name='close'
+            size={94}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={0.3}
+            color={colors.red}
+            onPress={() => swiperRef.current.swipeLeft()}
+          />
+          <MaterialCommunityIcons.Button
+            name='circle-outline'
+            size={94}
+            backgroundColor='transparent'
+            underlayColor='transparent'
+            activeOpacity={0.3}
+            color={colors.blue}
+            onPress={() => swiperRef.current.swipeRight()}
           />
         </View>
-        <View style={styles.bottomContainer}>
-          <Transitioning.View
-            ref={this.transitionRef}
-            transition={transition}
-            style={styles.bottomContainerMeta}
-          >
-            <View key={this.state.index} style={{ alignItems: 'center' }}>
-              <Text style={[styles.text, styles.heading]} numberOfLines={2}>
-                {this.state.cards[this.state.index].name}
-              </Text>
-              <Text style={[styles.text, styles.price]}>
-                {this.state.cards[this.state.index].price}
-              </Text>
-            </View>
-          </Transitioning.View>
-          <View style={styles.bottomContainerButtons}>
-            <MaterialCommunityIcons.Button
-              name='close'
-              size={94}
-              backgroundColor='transparent'
-              underlayColor='transparent'
-              activeOpacity={0.3}
-              color={colors.red}
-              onPress={this.swipeLeft}
-            />
-            <MaterialCommunityIcons.Button
-              name='circle-outline'
-              size={94}
-              backgroundColor='transparent'
-              underlayColor='transparent'
-              activeOpacity={0.3}
-              color={colors.blue}
-              onPress={this.swipeRight}
-            />
-          </View>
-        </View>
-      </SafeAreaView>
-    );
-  }
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
